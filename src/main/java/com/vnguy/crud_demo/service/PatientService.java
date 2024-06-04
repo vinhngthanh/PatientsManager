@@ -12,21 +12,21 @@ import java.util.Optional;
 public class PatientService {
 
     @Autowired
-    private PatientRepository patientRepository;
+    private static PatientRepository patientRepository;
 
-    public List<Patient> findAllPatients() {
+    public static List<Patient> findAllPatients() {
         return patientRepository.findAll();
     }
 
-    public Optional<Patient> findPatientById(Long id) {
+    public static Optional<Patient> findPatientById(Long id) {
         return patientRepository.findById(id);
     }
 
-    public Patient savePatient(Patient patient) {
+    public static Patient savePatient(Patient patient) {
         return patientRepository.save(patient);
     }
 
-    public void deletePatient(Long id) {
+    public static void deletePatient(Long id) {
         patientRepository.deleteById(id);
     }
 
