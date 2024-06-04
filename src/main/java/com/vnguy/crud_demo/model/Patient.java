@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Table(name = "patient")
 public class Patient {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long patientId;
 
     @Column(nullable = false)
