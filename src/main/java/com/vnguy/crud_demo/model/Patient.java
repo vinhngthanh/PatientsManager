@@ -32,7 +32,4 @@ public class Patient {
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;
-
-    // Getters and Setters
-    // Constructor
 }
