@@ -36,7 +36,7 @@ public class PatientController {
     @PutMapping("/{id}")
     public ResponseEntity<Patient> updateUser(@PathVariable Long id, @RequestBody Patient patient) {
         return patientService.findPatientById(id)
-                .map(existingPatient -> {
+                .map(existingPatient    -> {
                     patientService.findPatientById(id);
                     return ResponseEntity.ok(patientService.updatePatient(patient));
                 })
