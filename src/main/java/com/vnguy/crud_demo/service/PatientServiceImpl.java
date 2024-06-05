@@ -39,8 +39,12 @@ public class PatientServiceImpl implements  PatientService{
         if (patient == null) {
             return null;
         }
-        return PatientMapper.toPatientDto(patientRepository
-                .save(PatientMapper.convertToEntity(patientDto)));
+        patient.setName(patientDto.getName());
+        patient.setGender(patientDto.getGender());
+        patient.setAge(patientDto.getAge());
+        patient.setEmail(patientDto.getEmail());
+        patient.setPhoneNumber(patientDto.getPhoneNumber());
+        return PatientMapper.toPatientDto(patientRepository.save(patient));
     }
 
     public void deletePatient(Long id) {
