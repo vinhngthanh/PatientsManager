@@ -7,10 +7,8 @@ import com.vnguy.crud_demo.repository.PatientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +23,9 @@ public class PatientServiceImpl implements  PatientService{
 
     @Override
     public PatientDto getPatientById(Long id) {
-        return PatientMapper.toPatientDto(Objects.requireNonNull(patientRepository.findById(id).orElse(null)));
+        Patient patient = patientRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Patient not found with id: " + id));
+        return PatientMapper.toPatientDto(patient);
     }
 
     @Override
