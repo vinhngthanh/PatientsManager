@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-//Need error handling
-//Need constraint on input
-
 function CreateUser() {
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
