@@ -34,7 +34,6 @@ public class PatientController {
     @PutMapping("/{id}")
     public ResponseEntity<PatientDto> updateUser(@PathVariable Long id, @RequestBody PatientDto patientDto) {
         return ResponseEntity.ok(patientService.updatePatient(id, patientDto));
-
     }
 
     @DeleteMapping("/{id}")

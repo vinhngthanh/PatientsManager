@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function CreateUser() {
+function CreatePatient() {
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
@@ -121,4 +121,4 @@ function CreateUser() {
   );
 }
 
-export default CreateUser;
+export default CreatePatient;

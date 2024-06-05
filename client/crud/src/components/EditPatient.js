@@ -1,21 +1,125 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 
-function ComponentName() {
+function EditPatient() {
+  const { patientId } = useParams();
+  const [name, setName] = useState("");
+  const [gender, setGender] = useState("");
+  const [age, setAge] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const cancel = () => {
     navigate(`/`);
   };
 
-  const save = () => {};
+  const save = () => {
+    if (isNaN(age)) {
+      setError("Age must be a number");
+      return;
+    }
+
+    const newUser = {
+      name,
+      gender,
+      age,
+      email,
+      phoneNumber,
+    };
+
+    axios
+      .put(`http://localhost:8080/${patientId}`, newUser)
+      .then(() => {
+        navigate(`/`);
+      })
+      .catch((error) => {
+        console.error("Error creating user:", error);
+        if (error.response) {
+          setError(`Server responded with status: ${error.response.status}`);
+        } else if (error.request) {
+          setError("No response received from server. Please try again later.");
+        } else {
+          setError(`Error in setting up request: ${error.message}`);
+        }
+      });
+  };
 
   return (
     <div>
-      <button onClick={() => cancel()}>Cancel</button>
-      <button onClick={() => save()}>Save</button>
+      <h1>Edit User</h1>
+      {error && <div>{error}</div>}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          save();
+        }}
+      >
+        <div>
+          <label>
+            Name:
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Gender:
+            <input
+              type="text"
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Age:
+            <input
+              type="text"
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Email:
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </label>
+        </div>
+        <div>
+          <label>
+            Phone Number:
+            <input
+              type="text"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        <div>
+          <button type="button" onClick={cancel}>
+            Cancel
+          </button>
+          <button type="submit">Save</button>
+        </div>
+      </form>
     </div>
   );
 }
 
-export default ComponentName;
+export default EditPatient;
