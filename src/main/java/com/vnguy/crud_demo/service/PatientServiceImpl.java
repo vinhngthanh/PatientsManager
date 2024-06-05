@@ -25,8 +25,10 @@ public class PatientServiceImpl implements  PatientService{
 
     @Override
     public PatientDto getPatientById(Long id) {
-        Patient patient = patientRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Patient not found with id: " + id));
+        Patient patient = patientRepository.findById(id).orElse(null);
+        if(patient == null) {
+            throw new NoSuchElementException("Patient not found with id: " + id);
+        }
         return PatientMapper.toPatientDto(patient);
     }
 
