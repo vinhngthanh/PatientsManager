@@ -59,7 +59,7 @@ public class PatientServiceImpl implements  PatientService{
         if (checkEmail(patientDto.getEmail())) {
             throw new IllegalArgumentException("Email is already in use: " + patientDto.getEmail());
         }
-        if (validatePhoneNumber(patientDto.getPhoneNumber())) {
+        if (!validatePhoneNumber(patientDto.getPhoneNumber())) {
             throw new IllegalArgumentException("Invalid phone number format: " + patientDto.getPhoneNumber());
         }
         if (checkPhoneNumber(patientDto.getPhoneNumber())) {
