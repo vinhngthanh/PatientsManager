@@ -8,6 +8,7 @@ function CreateUser() {
   const [age, setAge] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const cancel = () => {
@@ -15,6 +16,11 @@ function CreateUser() {
   };
 
   const save = () => {
+    if (isNaN(age)) {
+      setError("Age must be a number");
+      return;
+    }
+
     const newUser = {
       name,
       gender,
@@ -30,12 +36,20 @@ function CreateUser() {
       })
       .catch((error) => {
         console.error("Error creating user:", error);
+        if (error.response) {
+          setError(`Server responded with status: ${error.response.status}`);
+        } else if (error.request) {
+          setError("No response received from server. Please try again later.");
+        } else {
+          setError(`Error in setting up request: ${error.message}`);
+        }
       });
   };
 
   return (
     <div>
       <h1>Create User</h1>
+      {error && <div>{error}</div>}
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -82,7 +96,6 @@ function CreateUser() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
             />
           </label>
         </div>
