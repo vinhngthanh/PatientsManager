@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 
 function AllPatients() {
   const [patients, setPatients] = useState([]);
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [selectedPatientId, setSelectedPatientId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,8 +19,33 @@ function AllPatients() {
     navigate(`/edit/${patientId}`);
   };
 
-  const handleDelete = (patientId) => {
-    navigate(`/delete/${patientId}`);
+  const handleDeleteClick = (patientId) => {
+    setSelectedPatientId(patientId);
+    setShowConfirm(true);
+  };
+
+  const handleConfirmDelete = () => {
+    axios
+      .delete(`http://localhost:8080/${selectedPatientId}`)
+      .then(() => {
+        setPatients((prevPatients) =>
+          prevPatients.filter(
+            (patient) => patient.patientId !== selectedPatientId
+          )
+        );
+        setShowConfirm(false);
+        setSelectedPatientId(null);
+      })
+      .catch((error) => {
+        console.error("Error deleting patient:", error);
+        setShowConfirm(false);
+        setSelectedPatientId(null);
+      });
+  };
+
+  const handleCancelDelete = () => {
+    setShowConfirm(false);
+    setSelectedPatientId(null);
   };
 
   const handleCreate = () => {
@@ -53,7 +80,7 @@ function AllPatients() {
                 <button onClick={() => handleEdit(patient.patientId)}>
                   Edit
                 </button>
-                <button onClick={() => handleDelete(patient.patientId)}>
+                <button onClick={() => handleDeleteClick(patient.patientId)}>
                   Delete
                 </button>
               </td>
@@ -61,7 +88,17 @@ function AllPatients() {
           ))}
         </tbody>
       </table>
-      <button onClick={() => handleCreate()}>Create Patient</button>
+      <button onClick={handleCreate}>Create Patient</button>
+
+      {showConfirm && (
+        <div className="confirmation-dialog">
+          <div className="dialog-content">
+            <p>Are you sure you want to delete this patient?</p>
+            <button onClick={handleConfirmDelete}>Confirm</button>
+            <button onClick={handleCancelDelete}>Cancel</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

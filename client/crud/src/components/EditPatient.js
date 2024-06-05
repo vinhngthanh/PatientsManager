@@ -8,7 +8,14 @@ function ComponentName() {
     navigate(`/`);
   };
 
-  return <button onClick={() => cancel()}>Cancel</button>;
+  const save = () => {};
+
+  return (
+    <div>
+      <button onClick={() => cancel()}>Cancel</button>
+      <button onClick={() => save()}>Save</button>
+    </div>
+  );
 }
 
 export default ComponentName;
