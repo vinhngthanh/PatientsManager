@@ -110,34 +110,6 @@ paths:
           description: Patient deleted successfully
 components:
   schemas:
-    Pageable:
-      type: object
-      description: This object will be overridden by Spring's Pageable
-      properties:
-        page:
-          type: integer
-          minimum: 0
-          default: 0
-        size:
-          type: integer
-          minimum: 1
-          maximum: 100
-          default: 20
-        sort:
-          type: array
-          items:
-            type: string
-          example: createdAt,DESC
-    FilterPatient:
-      type: object
-      properties:
-        searchWord:
-          type: string
-    PatientDto:
-      type: object
-      properties:
-        searchWord:
-          type: string
     PatientRequest:
       type: object
       required:
@@ -148,17 +120,98 @@ components:
       properties:
         name:
           type: string
+          description: "Name of the patient"
+        gender:
+          type: string
+          description: "Gender of the patient"
+        age:
+          type: integer
+          description: "Age of the patient"
+        email:
+          type: string
+          description: "Email address of the patient"
+        phoneNumber:
+          type: string
+          pattern: "^\\+\\d{1,3}\\d{10}$"
+          description: "Phone number of the patient"
+    PatientDto:
+      type: object
+      required:
+        - id
+        - name
+        - gender
+        - age
+        - phoneNumber
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: "Id of the patient"
+        name:
+          type: string
+          description: "Name of the patient"
+        gender:
+          type: string
+          description: "Gender of the patient"
+        age:
+          type: integer
+          description: "Age of the patient"
+        email:
+          type: string
+          description: "Email address of the patient"
+        phoneNumber:
+          type: string
+          pattern: "^\\+\\d{1,3}\\d{10}$"
+          description: "Phone number of the patient"
+        createdAt:
+          type: string
+          format: date-time
+          description: "Time created patient"
+        updatedAt:
+          type: string
+          format: date-time
+          description: "Time updated patient"
+    FilterPatient:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
         gender:
           type: string
         age:
-          type: string
+          type: integer
         email:
           type: string
         phoneNumber:
           type: string
-          pattern: "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$|^$"
+          pattern: "^\\+\\d{1,3}\\d{10}$"
+    Pageable:
+      type: object
+      properties:
+        page:
+          type: integer
+          minimum: 0
+          default: 0
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
     PageDto:
       type: object
       properties:
-        status:
-          type: string
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/PatientDto"
+        numPages:
+          type: integer
+        pageSize:
+          type: integer
+        pageNumber:
+          type: integer
+        standardSize:
+          type: integer
