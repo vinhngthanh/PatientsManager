@@ -37,7 +37,7 @@ function CreatePatient() {
       .catch((error) => {
         console.error("Error creating user:", error);
         if (error.response) {
-          setError(`Server responded with status: ${error.response.status}`);
+          setError(`${error.response.data.error}`);
         } else if (error.request) {
           setError("No response received from server. Please try again later.");
         } else {
