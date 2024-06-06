@@ -128,11 +128,6 @@ components:
           items:
             type: string
           example: createdAt,DESC
-    HealthResponseDto:
-      type: object
-      properties:
-        status:
-          type: string
     FilterPatient:
       type: object
       properties:
@@ -145,46 +140,23 @@ components:
           type: string
     PatientRequest:
       type: object
+      required:
+        - name
+        - gender
+        - age
+        - phoneNumber
       properties:
-        searchWord:
-          type: string
-    CreatePatient:
-      type: object
-      properties:
-        searchWord:
-          type: string
-    AnimalPaginatedDto:
-      type: object
-      properties:
-        total:
-          type: integer
-          format: int64
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/AnimalDto'
-    AnimalDto:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
         name:
-          type: string
-        status:
-          type: string
-        birthday:
-          type: string
-          format: date
-        type:
           type: string
         gender:
           type: string
-        tenantId:
+        age:
           type: string
-        joinedDate:
+        email:
           type: string
-          format: date-time
+        phoneNumber:
+          type: string
+          pattern: "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*$|^$"
     PageDto:
       type: object
       properties:
