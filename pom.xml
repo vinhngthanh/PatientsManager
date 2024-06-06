@@ -122,6 +122,35 @@
 					<password>Ntv#28062002</password>
 				</configuration>
 			</plugin>
+
+		          <plugin>
+		             <groupId>org.openapitools</groupId>
+		             <artifactId>openapi-generator-maven-plugin</artifactId>
+		             <version>7.1.0</version>
+		             <executions>
+		                <execution>
+		                   <goals>
+		                      <goal>generate</goal>
+		                   </goals>
+		                   <configuration>
+		                      <inputSpec>${project.basedir}/src/main/resources/swagger/api.yml</inputSpec>
+		                      <generatorName>spring</generatorName>
+		                      <apiPackage>com.baeldung.openapi.api</apiPackage>
+		                      <modelPackage>com.baeldung.openapi.model</modelPackage>
+		                      <configOptions>
+		                         <delegatePattern>true</delegatePattern>
+		                         <useJakartaEe>true</useJakartaEe>
+		                      </configOptions>
+		                      <additionalProperties>
+		                         <useJakartaEe>true</useJakartaEe>
+		                      </additionalProperties>
+		                      <supportingFilesToGenerate>
+		                         ApiUtil.java
+		                      </supportingFilesToGenerate>
+		                   </configuration>
+		                </execution>
+		             </executions>
+		          </plugin>
 		</plugins>
 	</build>
 

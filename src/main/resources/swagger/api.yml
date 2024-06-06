@@ -1,0 +1,106 @@
+openapi: '3.0.3'
+info:
+  title: 'Patient APIs'
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080
+    description: Development server
+paths:
+  /:
+    get:
+      description: Get all patients
+      operationId: getAnimals
+      tags:
+        - 'animals-v1'
+      parameters:
+        - name: criteria
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/AnimalCriteria'
+        - $ref: '#/components/parameters/pageable'
+      responses:
+        400:
+          description: Bad request
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnimalPaginatedDto'
+components:
+  parameters:
+    id:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    pageable:
+      name: pageable
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/Pageable'
+  schemas:
+    Pageable:
+      type: object
+      description: This object will be overridden by Spring's Pageable
+      properties:
+        page:
+          type: integer
+          minimum: 0
+          default: 0
+        size:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 20
+        sort:
+          type: array
+          items:
+            type: string
+          example: createdAt,DESC
+    HealthResponseDto:
+      type: object
+      properties:
+        status:
+          type: string
+    AnimalCriteria:
+      type: object
+      properties:
+        searchWord:
+          type: string
+    AnimalPaginatedDto:
+      type: object
+      properties:
+        total:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnimalDto'
+    AnimalDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        status:
+          type: string
+        birthday:
+          type: string
+          format: date
+        type:
+          type: string
+        gender:
+          type: string
+        tenantId:
+          type: string
+        joinedDate:
+          type: string
+          format: date-time
