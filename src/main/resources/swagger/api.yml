@@ -109,20 +109,6 @@ paths:
         204:
           description: Patient deleted successfully
 components:
-  parameters:
-    id:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-        format: uuid
-    pageable:
-      name: pageable
-      in: query
-      required: false
-      schema:
-        $ref: '#/components/schemas/Pageable'
   schemas:
     Pageable:
       type: object
