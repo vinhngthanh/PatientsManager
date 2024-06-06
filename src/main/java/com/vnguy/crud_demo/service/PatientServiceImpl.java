@@ -21,6 +21,7 @@ public class PatientServiceImpl implements  PatientService{
 
     @Override
     public List<PatientDto> getPatients() {
+        //add patient filter
         return PatientMapper.toPatientDtos(patientRepository.findAll());
     }
 
