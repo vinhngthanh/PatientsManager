@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
@@ -12,6 +12,29 @@ function EditPatient() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8080/${patientId}`)
+      .then((response) => {
+        const patientData = response.data;
+        setName(patientData.name);
+        setGender(patientData.gender);
+        setAge(patientData.age);
+        setEmail(patientData.email);
+        setPhoneNumber(patientData.phoneNumber);
+      })
+      .catch((error) => {
+        console.error("Error creating user:", error);
+        if (error.response) {
+          setError(`${error.response.data.error}`);
+        } else if (error.request) {
+          setError("No response received from server. Please try again later.");
+        } else {
+          setError(`Error in setting up request: ${error.message}`);
+        }
+      });
+  }, [patientId]);
+
   const cancel = () => {
     navigate(`/`);
   };
@@ -22,7 +45,7 @@ function EditPatient() {
       return;
     }
 
-    const newUser = {
+    const updatedUser = {
       name,
       gender,
       age,
@@ -31,14 +54,14 @@ function EditPatient() {
     };
 
     axios
-      .put(`http://localhost:8080/${patientId}`, newUser)
+      .put(`http://localhost:8080/${patientId}`, updatedUser)
       .then(() => {
         navigate(`/`);
       })
       .catch((error) => {
         console.error("Error creating user:", error);
         if (error.response) {
-          setError(`Server responded with status: ${error.response.status}`);
+          setError(`${error.response.data.error}`);
         } else if (error.request) {
           setError("No response received from server. Please try again later.");
         } else {

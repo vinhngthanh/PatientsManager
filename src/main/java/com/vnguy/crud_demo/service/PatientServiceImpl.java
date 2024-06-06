@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 @Service
@@ -46,20 +47,36 @@ public class PatientServiceImpl implements  PatientService{
         if (patient == null) {
             throw new NoSuchElementException("Patient not found with id: " + id);
         }
-        validateInfo(patientDto);
+        update(patient, patientDto);
+        return PatientMapper.toPatientDto(patientRepository.save(patient));
+    }
+
+    private void update(Patient patient, PatientDto patientDto) {
+        if (validatePhoneNumber(patientDto.getPhoneNumber())) {
+            throw new IllegalArgumentException("Invalid phone number format: " + patientDto.getPhoneNumber());
+        }
+        if(!Objects.equals(patient.getPhoneNumber(), patientDto.getPhoneNumber())){
+            if (checkPhoneNumber(patientDto.getPhoneNumber())) {
+                throw new IllegalArgumentException("Phone number is already in use: " + patientDto.getPhoneNumber());
+            }
+        }
+        if(!Objects.equals(patient.getEmail(), patientDto.getEmail())){
+            if (checkEmail(patientDto.getEmail())) {
+                throw new IllegalArgumentException("Email is already in use: " + patientDto.getEmail());
+            }
+        }
         patient.setName(patientDto.getName());
         patient.setGender(patientDto.getGender());
         patient.setAge(patientDto.getAge());
         patient.setEmail(patientDto.getEmail());
         patient.setPhoneNumber(patientDto.getPhoneNumber());
-        return PatientMapper.toPatientDto(patientRepository.save(patient));
     }
 
     private void validateInfo(PatientDto patientDto) {
         if (checkEmail(patientDto.getEmail())) {
             throw new IllegalArgumentException("Email is already in use: " + patientDto.getEmail());
         }
-        if (!validatePhoneNumber(patientDto.getPhoneNumber())) {
+        if (validatePhoneNumber(patientDto.getPhoneNumber())) {
             throw new IllegalArgumentException("Invalid phone number format: " + patientDto.getPhoneNumber());
         }
         if (checkPhoneNumber(patientDto.getPhoneNumber())) {
@@ -72,7 +89,7 @@ public class PatientServiceImpl implements  PatientService{
     }
 
     private boolean validatePhoneNumber(String phoneNumber) {
-        return PHONE_NUMBER_PATTERN.matcher(phoneNumber).matches();
+        return !PHONE_NUMBER_PATTERN.matcher(phoneNumber).matches();
     }
 
     private boolean checkPhoneNumber(String phoneNumber) {

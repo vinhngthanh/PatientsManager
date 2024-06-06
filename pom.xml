@@ -86,14 +86,14 @@
 
 		<!-- OpenAPI -->
 		<dependency>
-			<groupId>org.openapitools</groupId>
-			<artifactId>jackson-databind-nullable</artifactId>
-			<version>0.2.1</version>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.6.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.7.0</version>
+			<artifactId>springdoc-openapi-data-rest</artifactId>
+			<version>1.6.9</version>
 		</dependency>
 	</dependencies>
 
