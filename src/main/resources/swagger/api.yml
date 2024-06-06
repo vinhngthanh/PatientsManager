@@ -17,7 +17,7 @@ paths:
           in: query
           required: false
           schema:
-            $ref: "#/components/schemas/PatientCriteria"
+            $ref: "#/components/schemas/FilterPatient"
         - name: pageable
           in: query
           required: false
@@ -25,11 +25,89 @@ paths:
             $ref: "#/components/schemas/Pageable"
       responses:
         200:
-          description: Successful operation
+          description: All patients loaded successfully
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/PageDto"
+    post:
+      description: Create a new patient
+      operationId: createPatients
+      tags:
+        - "patients"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatientRequest"
+      responses:
+        201:
+          description: Patient created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PatientDto"
+  /{id}:
+    get:
+      description: Get a patient by ID
+      operationId: getPatientById
+      tags:
+        - "patients"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        200:
+          description: Patient loaded successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PatientDto"
+    put:
+      description: Update an existing patient
+      operationId: updatePatient
+      tags:
+        - "patients"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PatientRequest"
+      responses:
+        200:
+          description: Patient updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PatientDto"
+    delete:
+      description: Delete a patient by ID
+      operationId: deletePatient
+      tags:
+        - "patients"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        204:
+          description: Patient deleted successfully
 components:
   parameters:
     id:
@@ -69,7 +147,22 @@ components:
       properties:
         status:
           type: string
-    PatientCriteria:
+    FilterPatient:
+      type: object
+      properties:
+        searchWord:
+          type: string
+    PatientDto:
+      type: object
+      properties:
+        searchWord:
+          type: string
+    PatientRequest:
+      type: object
+      properties:
+        searchWord:
+          type: string
+    CreatePatient:
       type: object
       properties:
         searchWord:
