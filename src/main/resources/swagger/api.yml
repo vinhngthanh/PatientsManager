@@ -9,25 +9,27 @@ paths:
   /:
     get:
       description: Get all patients
-      operationId: getAnimals
+      operationId: getAllPatients
       tags:
-        - 'animals-v1'
+        - "patients"
       parameters:
         - name: criteria
           in: query
           required: false
           schema:
-            $ref: '#/components/schemas/AnimalCriteria'
-        - $ref: '#/components/parameters/pageable'
+            $ref: "#/components/schemas/PatientCriteria"
+        - name: pageable
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/Pageable"
       responses:
-        400:
-          description: Bad request
         200:
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AnimalPaginatedDto'
+                $ref: "#/components/schemas/PageDto"
 components:
   parameters:
     id:
@@ -67,7 +69,7 @@ components:
       properties:
         status:
           type: string
-    AnimalCriteria:
+    PatientCriteria:
       type: object
       properties:
         searchWord:
@@ -104,3 +106,8 @@ components:
         joinedDate:
           type: string
           format: date-time
+    PageDto:
+      type: object
+      properties:
+        status:
+          type: string
