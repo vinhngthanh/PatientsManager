@@ -24,7 +24,7 @@ public class PatientServiceImpl implements  PatientService{
 
     private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
-    private static final Pattern PHONE_NUMBER_PATTERN = Pattern.compile("^\\+\\d{1,3}\\d{10}$");
+    private static final Pattern PHONE_NUMBER_PATTERN = Pattern.compile("^\\+\\d{1,3}-\\d{3}-\\d{3}-\\d{4}$");
 
     @Override
     public Page<PatientDto> getPatients(Pageable pageable, PatientCriteria criteria) {

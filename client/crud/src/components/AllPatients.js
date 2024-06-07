@@ -6,12 +6,20 @@ function AllPatients() {
   const [patients, setPatients] = useState([]);
   const [showConfirm, setShowConfirm] = useState(false);
   const [selectedPatientId, setSelectedPatientId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [pageSize, setPageSize] = useState(1);
   const navigate = useNavigate();
 
   useEffect(() => {
     axios
       .get("http://localhost:8080/patients")
-      .then((response) => setPatients(response.data.content))
+      .then((response) => {
+        setPatients(response.data.content);
+        setCurrentPage(response.data.pageNumber);
+        setTotalPages(response.data.totalPages);
+        setPageSize(response.data.pageSize);
+      })
       .catch((error) => console.error("Error fetching patients:", error));
   }, []);
 
@@ -52,6 +60,25 @@ function AllPatients() {
     navigate(`/create`);
   };
 
+  const handlePageClick = (page) => {
+    setCurrentPage(page);
+  };
+
+  const renderPageButtons = () => {
+    const pageButtons = [];
+    const maxPageToShow = Math.min(totalPages, currentPage + 4);
+    const startPage = Math.max(1, maxPageToShow - 4);
+
+    for (let i = startPage; i <= maxPageToShow; i++) {
+      pageButtons.push(
+        <button key={i} onClick={() => handlePageClick(i)}>
+          {i}
+        </button>
+      );
+    }
+    return pageButtons;
+  };
+
   return (
     <div>
       <h1>All Patients</h1>
@@ -89,6 +116,22 @@ function AllPatients() {
         </tbody>
       </table>
       <button onClick={handleCreate}>Create Patient</button>
+
+      <div className="navigator">
+        <button
+          onClick={() => setCurrentPage(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          {"<"}
+        </button>
+        {renderPageButtons()}
+        <button
+          onClick={() => setCurrentPage(currentPage + 1)}
+          disabled={currentPage === totalPages}
+        >
+          {">"}
+        </button>
+      </div>
 
       {showConfirm && (
         <div className="confirmation-dialog">
