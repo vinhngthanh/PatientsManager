@@ -10,8 +10,8 @@ function AllPatients() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080")
-      .then((response) => setPatients(response.data))
+      .get("http://localhost:8080/patients")
+      .then((response) => setPatients(response.data.content))
       .catch((error) => console.error("Error fetching patients:", error));
   }, []);
 
@@ -26,7 +26,7 @@ function AllPatients() {
 
   const handleConfirmDelete = () => {
     axios
-      .delete(`http://localhost:8080/${selectedPatientId}`)
+      .delete(`http://localhost:8080/patients/${selectedPatientId}`)
       .then(() => {
         setPatients((prevPatients) =>
           prevPatients.filter(

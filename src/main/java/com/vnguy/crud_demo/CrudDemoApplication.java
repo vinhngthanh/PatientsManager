@@ -1,11 +1,11 @@
 package com.vnguy.crud_demo;
 
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
+@ComponentScan({"com.vnguy.crud_demo", "com.baeldung.openapi.api"})
 @SpringBootApplication
-@OpenAPIDefinition
 public class CrudDemoApplication {
 
 	public static void main(String[] args) {

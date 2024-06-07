@@ -6,7 +6,7 @@ servers:
   - url: http://localhost:8080
     description: Development server
 paths:
-  /:
+  /patients:
     get:
       description: Get all patients
       operationId: getAllPatients
@@ -17,7 +17,7 @@ paths:
           in: query
           required: false
           schema:
-            $ref: "#/components/schemas/FilterPatient"
+            $ref: "#/components/schemas/PatientCriteria"
         - name: pageable
           in: query
           required: false
@@ -48,7 +48,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PatientDto"
-  /{id}:
+  /patients/{id}:
     get:
       description: Get a patient by ID
       operationId: getPatientById
@@ -171,7 +171,7 @@ components:
           type: string
           format: date-time
           description: "Time updated patient"
-    FilterPatient:
+    PatientCriteria:
       type: object
       properties:
         id:
@@ -207,11 +207,11 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/PatientDto"
-        numPages:
+        totalPages:
           type: integer
         pageSize:
           type: integer
         pageNumber:
           type: integer
-        standardSize:
+        totalElements:
           type: integer

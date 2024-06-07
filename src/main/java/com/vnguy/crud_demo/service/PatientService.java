@@ -1,13 +1,15 @@
 package com.vnguy.crud_demo.service;
 
-import com.vnguy.crud_demo.dto.PatientDto;
-
-import java.util.List;
+import com.baeldung.openapi.model.Pageable;
+import com.baeldung.openapi.model.PatientCriteria;
+import com.baeldung.openapi.model.PatientRequest;
+import com.baeldung.openapi.model.PatientDto;
+import org.springframework.data.domain.Page;
 
 public interface PatientService {
-    List<PatientDto> getPatients();
+    Page<PatientDto> getPatients(Pageable pageable, PatientCriteria criteria);
     PatientDto getPatientById(Long id);
-    PatientDto createPatient(PatientDto patientDto);
-    PatientDto updatePatient(Long id, PatientDto patientDto);
+    PatientDto createPatient(PatientRequest patientDto);
+    PatientDto updatePatient(Long id, PatientRequest patientDto);
     void deletePatient(Long id);
 }

@@ -30,7 +30,7 @@ function CreatePatient() {
     };
 
     axios
-      .post("http://localhost:8080", newUser)
+      .post("http://localhost:8080/patients", newUser)
       .then(() => {
         navigate(`/`);
       })

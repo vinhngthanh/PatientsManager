@@ -14,7 +14,7 @@ function EditPatient() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/${patientId}`)
+      .get(`http://localhost:8080/patients/${patientId}`)
       .then((response) => {
         const patientData = response.data;
         setName(patientData.name);
@@ -54,7 +54,7 @@ function EditPatient() {
     };
 
     axios
-      .put(`http://localhost:8080/${patientId}`, updatedUser)
+      .put(`http://localhost:8080/patients/${patientId}`, updatedUser)
       .then(() => {
         navigate(`/`);
       })

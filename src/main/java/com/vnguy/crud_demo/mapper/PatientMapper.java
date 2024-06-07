@@ -1,25 +1,19 @@
 package com.vnguy.crud_demo.mapper;
 
-import com.vnguy.crud_demo.dto.PatientDto;
+import com.baeldung.openapi.model.PatientDto;
+import com.baeldung.openapi.model.PatientRequest;
 import com.vnguy.crud_demo.model.Patient;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import java.util.List;
+import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
-public class PatientMapper {
-    public static PatientDto toPatientDto(Patient patient) {
-        return new PatientDto(patient.getPatientId(), patient.getName(), patient.getGender()
-                , patient.getAge(), patient.getEmail(), patient.getPhoneNumber(), patient.getCreatedAt(),
-                patient.getUpdatedAt());
-    }
+@Mapper(componentModel = SPRING, uses = {DateTimeMapper.class})
+public interface PatientMapper {
+    Patient toPatient(PatientRequest request);
 
-    public static List<PatientDto> toPatientDtos(List<Patient> patients) {
-        return patients.stream().map(PatientMapper::toPatientDto).toList();
-    }
 
-    public static Patient convertToEntity(PatientDto patientDto) {
-        return new Patient(patientDto.getPatientId(), patientDto.getName(), patientDto.getGender(), patientDto.getAge()
-                , patientDto.getEmail(), patientDto.getPhoneNumber()
-                , patientDto.getCreatedAt(), patientDto.getUpdatedAt());
-    }
+    @Mapping(target="createdAt", source="createdAt", qualifiedByName = "toOffsetDateTime")
+    @Mapping(target="updatedAt", source="updatedAt", qualifiedByName = "toOffsetDateTime")
+    PatientDto toPatientDto(Patient patient);
 }
