@@ -8,7 +8,7 @@ function AllPatients() {
   const [selectedPatientId, setSelectedPatientId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(20);
   const [criteria, setCriteria] = useState({});
   const navigate = useNavigate();
 
@@ -63,6 +63,10 @@ function AllPatients() {
       });
   };
 
+  const filter = () => {
+    setCriteria({});
+  };
+
   const handleCancelDelete = () => {
     setShowConfirm(false);
     setSelectedPatientId(null);
@@ -94,6 +98,15 @@ function AllPatients() {
   return (
     <div>
       <h1>All Patients</h1>
+      <div>
+        <input placeholder="ID" type="text" />
+        <input placeholder="Name" type="text" />
+        <input placeholder="Gender" type="text" />
+        <input placeholder="Age" type="text" />
+        <input placeholder="Email" type="email" />
+        <input placeholder="Phone Number" type="text" />
+        <button onClick={filter}>Filter</button>
+      </div>
       <table>
         <thead>
           <tr>
