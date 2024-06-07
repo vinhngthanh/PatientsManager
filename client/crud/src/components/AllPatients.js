@@ -8,20 +8,32 @@ function AllPatients() {
   const [selectedPatientId, setSelectedPatientId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [pageSize, setPageSize] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [criteria, setCriteria] = useState({});
   const navigate = useNavigate();
 
-  useEffect(() => {
+  const fetchPatients = (page, size, criteria) => {
+    const params = new URLSearchParams();
+    for (const key in criteria) {
+      if (criteria[key] !== undefined) {
+        params.append(`${key}`, criteria[key]);
+      }
+    }
+    params.append("page", page - 1);
+    params.append("size", size);
+
     axios
-      .get("http://localhost:8080/patients")
+      .get(`http://localhost:8080/patients?${params.toString()}`)
       .then((response) => {
         setPatients(response.data.content);
-        setCurrentPage(response.data.pageNumber);
         setTotalPages(response.data.totalPages);
-        setPageSize(response.data.pageSize);
       })
       .catch((error) => console.error("Error fetching patients:", error));
-  }, []);
+  };
+
+  useEffect(() => {
+    fetchPatients(currentPage, pageSize, criteria);
+  }, [currentPage, pageSize, criteria]);
 
   const handleEdit = (patientId) => {
     navigate(`/edit/${patientId}`);

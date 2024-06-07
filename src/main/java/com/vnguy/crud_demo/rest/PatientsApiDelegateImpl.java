@@ -27,6 +27,7 @@ public class PatientsApiDelegateImpl implements PatientsApiDelegate {
 
     @Override
     public ResponseEntity<PageDto> getAllPatients(PatientCriteria criteria, Pageable pageable) {
+        System.out.println(pageable.getPage() + " " + pageable.getSize());
         Page<PatientDto> page = patientService.getPatients(pageable, criteria);
         PageDto pageDto = new PageDto()
                 .content(page.getContent())

@@ -29,6 +29,7 @@ public class PatientServiceImpl implements  PatientService{
     @Override
     public Page<PatientDto> getPatients(Pageable pageable, PatientCriteria criteria) {
         PageRequest sortedPageable = PageRequest.of(pageable.getPage(), pageable.getSize(), Sort.by("patientId").ascending());
+        System.out.println(pageable.getPage() + " " + pageable.getSize());
         Specification<Patient> specification = buildSpecification(criteria);
         Page<Patient> patientPage = patientRepository.findAll(specification, sortedPageable);
         return patientPage.map(patientMapper::toPatientDto);
