@@ -9,14 +9,29 @@ function AllPatients() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pageSize, setPageSize] = useState(20);
-  const [criteria, setCriteria] = useState({});
+  const [criteria, setCriteria] = useState({
+    patientId: "",
+    name: "",
+    gender: "",
+    age: "",
+    email: "",
+    phoneNumber: "",
+  });
+  const [filterCriteria, setFilterCriteria] = useState({
+    patientId: "",
+    name: "",
+    gender: "",
+    age: "",
+    email: "",
+    phoneNumber: "",
+  });
   const navigate = useNavigate();
 
-  const fetchPatients = (page, size, criteria) => {
+  const fetchPatients = (page, size, filterCriteria) => {
     const params = new URLSearchParams();
-    for (const key in criteria) {
-      if (criteria[key] !== undefined) {
-        params.append(`${key}`, criteria[key]);
+    for (const key in filterCriteria) {
+      if (filterCriteria[key]) {
+        params.append(key, filterCriteria[key]);
       }
     }
     params.append("page", page - 1);
@@ -32,8 +47,8 @@ function AllPatients() {
   };
 
   useEffect(() => {
-    fetchPatients(currentPage, pageSize, criteria);
-  }, [currentPage, pageSize, criteria]);
+    fetchPatients(currentPage, pageSize, filterCriteria);
+  }, [currentPage, pageSize, filterCriteria]);
 
   const handleEdit = (patientId) => {
     navigate(`/edit/${patientId}`);
@@ -63,8 +78,17 @@ function AllPatients() {
       });
   };
 
-  const filter = () => {
-    setCriteria({});
+  const handleFilter = () => {
+    setCurrentPage(1);
+    setFilterCriteria(criteria);
+  };
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setCriteria((prevCriteria) => ({
+      ...prevCriteria,
+      [name]: value,
+    }));
   };
 
   const handleCancelDelete = () => {
@@ -99,13 +123,49 @@ function AllPatients() {
     <div>
       <h1>All Patients</h1>
       <div>
-        <input placeholder="ID" type="text" />
-        <input placeholder="Name" type="text" />
-        <input placeholder="Gender" type="text" />
-        <input placeholder="Age" type="text" />
-        <input placeholder="Email" type="email" />
-        <input placeholder="Phone Number" type="text" />
-        <button onClick={filter}>Filter</button>
+        <input
+          placeholder="ID"
+          type="text"
+          name="patientId"
+          value={criteria.patientId}
+          onChange={handleInputChange}
+        />
+        <input
+          placeholder="Name"
+          type="text"
+          name="name"
+          value={criteria.name}
+          onChange={handleInputChange}
+        />
+        <input
+          placeholder="Gender"
+          type="text"
+          name="gender"
+          value={criteria.gender}
+          onChange={handleInputChange}
+        />
+        <input
+          placeholder="Age"
+          type="text"
+          name="age"
+          value={criteria.age}
+          onChange={handleInputChange}
+        />
+        <input
+          placeholder="Email"
+          type="email"
+          name="email"
+          value={criteria.email}
+          onChange={handleInputChange}
+        />
+        <input
+          placeholder="Phone Number"
+          type="text"
+          name="phoneNumber"
+          value={criteria.phoneNumber}
+          onChange={handleInputChange}
+        />
+        <button onClick={handleFilter}>Filter</button>
       </div>
       <table>
         <thead>
