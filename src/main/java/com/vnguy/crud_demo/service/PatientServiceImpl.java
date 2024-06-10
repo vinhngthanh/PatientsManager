@@ -111,7 +111,7 @@ public class PatientServiceImpl implements  PatientService{
     }
 
     private Specification<Patient> buildSpecification(PatientCriteria criteria) {
-        return Specification.where(hasId(criteria.getId()))
+        return Specification.where(hasId(criteria.getPatientId()))
                 .and(hasName(criteria.getName()))
                 .and(hasGender(criteria.getGender()))
                 .and(hasAge(criteria.getAge()))

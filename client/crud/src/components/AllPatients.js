@@ -119,6 +119,10 @@ function AllPatients() {
     return pageButtons;
   };
 
+  const handlePageSizeChange = (event) => {
+    setPageSize(Number(event.target.value));
+  };
+
   return (
     <div>
       <h1>All Patients</h1>
@@ -216,6 +220,16 @@ function AllPatients() {
         >
           {">"}
         </button>
+
+        <select
+          id="sizeSelect"
+          name="sizeSelect"
+          onChange={handlePageSizeChange}
+        >
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="50">50</option>
+        </select>
       </div>
 
       {showConfirm && (
