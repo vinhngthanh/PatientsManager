@@ -11,6 +11,8 @@ function App() {
         <Route exact path="/" element={<AllPatients />} />
         <Route exact path="/edit/:patientId" element={<EditPatient />} />
         <Route exact path="/create" element={<CreatePatient />} />
+        <Route exact path="/auth/signin" element={<CreatePatient />} />
+        <Route exact path="/auth/signup" element={<CreatePatient />} />
       </Routes>
     </Router>
   );

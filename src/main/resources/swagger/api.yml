@@ -307,6 +307,8 @@ components:
       properties:
         accessToken:
           type: string
+        role:
+          type: string
     ErrorResponse:
       type: object
       properties:
