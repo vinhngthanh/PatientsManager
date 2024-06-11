@@ -108,6 +108,67 @@ paths:
       responses:
         204:
           description: Patient deleted successfully
+  /auth/signup:
+    post:
+      description: User sign up
+      operationId: signUp
+      tags:
+        - "auth"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignUpRequest"
+      responses:
+        201:
+          description: User signed up successfully
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /auth/signin:
+    post:
+      description: User sign in
+      operationId: signIn
+      tags:
+        - "auth"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SignInRequest"
+      responses:
+        200:
+          description: User signed in successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JwtResponse"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /auth/logout:
+    post:
+      description: User logout
+      operationId: logout
+      tags:
+        - "auth"
+      responses:
+        200:
+          description: User logged out successfully
+        400:
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
 components:
   schemas:
     PatientRequest:
@@ -215,3 +276,39 @@ components:
           type: integer
         totalElements:
           type: integer
+    SignUpRequest:
+      type: object
+      required:
+        - username
+        - password
+        - role
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        role:
+          type: string
+          enum:
+            - USER
+            - ADMIN
+    SignInRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    JwtResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
