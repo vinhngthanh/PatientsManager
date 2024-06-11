@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../instances/AxiosInstance";
 
 function AllPatients() {
   const [patients, setPatients] = useState([]);
@@ -37,7 +37,7 @@ function AllPatients() {
     params.append("page", page - 1);
     params.append("size", size);
 
-    axios
+    axiosInstance
       .get(`http://localhost:8080/patients?${params.toString()}`)
       .then((response) => {
         setPatients(response.data.content);
@@ -60,7 +60,7 @@ function AllPatients() {
   };
 
   const handleConfirmDelete = () => {
-    axios
+    axiosInstance
       .delete(`http://localhost:8080/patients/${selectedPatientId}`)
       .then(() => {
         setPatients((prevPatients) =>
@@ -104,6 +104,24 @@ function AllPatients() {
     setCurrentPage(page);
   };
 
+  const handleLogin = () => {
+    navigate("/signin");
+  };
+  const handleLogout = () => {
+    axiosInstance
+      .post(`http://localhost:8080/auth/logout`)
+      .then(() => {
+        localStorage.removeItem("jwtToken");
+        navigate(`/`);
+      })
+      .catch((error) => {
+        console.error("Error logging out:", error);
+      });
+  };
+  const handleNewUser = () => {
+    navigate("/signup");
+  };
+
   const renderPageButtons = () => {
     const pageButtons = [];
     const maxPageToShow = Math.min(totalPages, currentPage + 4);
@@ -126,6 +144,11 @@ function AllPatients() {
   return (
     <div>
       <h1>All Patients</h1>
+      <div>
+        <button onClick={() => handleLogin()}>Login</button>
+        <button onClick={() => handleLogout()}>Logout</button>
+        <button onClick={() => handleNewUser()}>New User</button>
+      </div>
       <div>
         <input
           placeholder="ID"

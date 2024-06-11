@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../instances/AxiosInstance";
 
 function CreatePatient() {
   const [name, setName] = useState("");
@@ -29,7 +29,7 @@ function CreatePatient() {
       phoneNumber,
     };
 
-    axios
+    axiosInstance
       .post("http://localhost:8080/patients", newUser)
       .then(() => {
         navigate(`/`);
