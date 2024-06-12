@@ -11,7 +11,6 @@ function AllPatients() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pageSize, setPageSize] = useState(20);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [criteria, setCriteria] = useState({
     patientId: "",
@@ -55,14 +54,8 @@ function AllPatients() {
   }, [currentPage, pageSize, filterCriteria]);
 
   useEffect(() => {
-    const token = localStorage.getItem("jwtToken");
-    setIsLoggedIn(!!token);
     const role = localStorage.getItem("role");
-    if (role === "ADMIN") {
-      setIsAdmin(true);
-    } else {
-      setIsAdmin(false);
-    }
+    setIsAdmin(role === "ADMIN");
   }, []);
 
   const handleEdit = (patientId) => {
@@ -119,24 +112,19 @@ function AllPatients() {
     setCurrentPage(page);
   };
 
-  const handleLogin = () => {
-    navigate("/");
-  };
   const handleLogout = () => {
     axios
       .post(`http://localhost:8080/auth/logout`)
       .then(() => {
         localStorage.removeItem("jwtToken");
+        localStorage.removeItem("role");
         setIsAdmin(false);
-        setIsLoggedIn(false);
         navigate("/");
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Error logging out:", error);
       });
-  };
-  const handleNewUser = () => {
-    navigate("/signup");
   };
 
   const renderPageButtons = () => {
@@ -166,21 +154,7 @@ function AllPatients() {
     <div className="page-container">
       <h1>All Patients</h1>
       <div>
-        {!isLoggedIn && (
-          <>
-            <button onClick={() => handleLogin()}>Login</button>
-          </>
-        )}
-        {isLoggedIn && (
-          <>
-            <button onClick={() => handleLogout()}>Logout</button>
-          </>
-        )}
-        {!isLoggedIn && (
-          <>
-            <button onClick={() => handleNewUser()}>New User</button>
-          </>
-        )}
+        <button onClick={() => handleLogout()}>Logout</button>
       </div>
       <div className="filter-container">
         <input
@@ -244,34 +218,33 @@ function AllPatients() {
           </tr>
         </thead>
         <tbody>
-          {isLoggedIn &&
-            patients.map((patient) => (
-              <tr key={patient.patientId}>
-                <td>{patient.patientId}</td>
-                <td>{patient.name}</td>
-                <td>{patient.gender}</td>
-                <td>{patient.age}</td>
-                <td>{patient.email}</td>
-                <td>{patient.phoneNumber}</td>
-                {isAdmin && (
-                  <>
-                    <td>
-                      <button onClick={() => handleEdit(patient.patientId)}>
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDeleteClick(patient.patientId)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </>
-                )}
-              </tr>
-            ))}
+          {patients.map((patient) => (
+            <tr key={patient.patientId}>
+              <td>{patient.patientId}</td>
+              <td>{patient.name}</td>
+              <td>{patient.gender}</td>
+              <td>{patient.age}</td>
+              <td>{patient.email}</td>
+              <td>{patient.phoneNumber}</td>
+              {isAdmin && (
+                <>
+                  <td>
+                    <button onClick={() => handleEdit(patient.patientId)}>
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDeleteClick(patient.patientId)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </>
+              )}
+            </tr>
+          ))}
         </tbody>
       </table>
-      {isLoggedIn && isAdmin && (
+      {isAdmin && (
         <>
           <button onClick={handleCreate}>Create Patient</button>
         </>

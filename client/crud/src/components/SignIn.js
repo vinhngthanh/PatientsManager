@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "../css/AllPatients.css";
 
 function SignIn() {
@@ -12,24 +12,26 @@ function SignIn() {
     navigate("/signup");
   };
 
-  const save = () => {
+  const save = async () => {
     const loginInfo = {
       username,
       password,
     };
 
-    axios
-      .post("http://localhost:8080/auth/signin", loginInfo)
-      .then((response) => {
-        const token = response.data.accessToken;
-        const role = response.data.role;
-        localStorage.setItem("jwtToken", token);
-        localStorage.setItem("role", role);
-        navigate(`/patients`);
-      })
-      .catch((error) => {
-        console.error("Error creating user:", error);
-      });
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/auth/signin",
+        loginInfo
+      );
+      const token = response.data.accessToken;
+      const role = response.data.role;
+      localStorage.setItem("jwtToken", token);
+      localStorage.setItem("role", role);
+      navigate(`/patients`);
+      window.location.reload();
+    } catch (error) {
+      console.error("Error logging in:", error);
+    }
   };
 
   return (
@@ -57,7 +59,7 @@ function SignIn() {
             <label>
               Password:
               <input
-                type="text"
+                type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
