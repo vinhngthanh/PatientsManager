@@ -9,7 +9,7 @@ function SignUp() {
   const [role, setRole] = useState("");
   const navigate = useNavigate();
 
-  const cancel = () => {
+  const handleSignIn = () => {
     navigate(`/`);
   };
 
@@ -77,10 +77,10 @@ function SignUp() {
             </select>
           </div>
           <div>
-            <button type="button" onClick={cancel}>
-              Cancel
-            </button>
             <button type="submit">Sign Up</button>
+            <button type="button" onClick={handleSignIn}>
+              Sign In
+            </button>
           </div>
         </form>
       </div>

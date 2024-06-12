@@ -13,7 +13,7 @@ function CreatePatient() {
   const navigate = useNavigate();
 
   const cancel = () => {
-    navigate(`/`);
+    navigate(`/patients`);
   };
 
   const save = () => {
@@ -33,7 +33,7 @@ function CreatePatient() {
     axiosInstance
       .post("http://localhost:8080/patients", newUser)
       .then(() => {
-        navigate(`/`);
+        navigate(`/patients`);
       })
       .catch((error) => {
         console.error("Error creating user:", error);

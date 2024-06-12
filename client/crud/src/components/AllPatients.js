@@ -120,7 +120,7 @@ function AllPatients() {
   };
 
   const handleLogin = () => {
-    navigate("/signin");
+    navigate("/");
   };
   const handleLogout = () => {
     axios
@@ -129,7 +129,7 @@ function AllPatients() {
         localStorage.removeItem("jwtToken");
         setIsAdmin(false);
         setIsLoggedIn(false);
-        window.location.reload();
+        navigate("/");
       })
       .catch((error) => {
         console.error("Error logging out:", error);
@@ -307,8 +307,8 @@ function AllPatients() {
         <div className="confirmation-dialog">
           <div className="dialog-content">
             <p>Are you sure you want to delete this patient?</p>
-            <button onClick={handleConfirmDelete}>Confirm</button>
             <button onClick={handleCancelDelete}>Cancel</button>
+            <button onClick={handleConfirmDelete}>Confirm</button>
           </div>
         </div>
       )}

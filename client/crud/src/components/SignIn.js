@@ -8,8 +8,8 @@ function SignIn() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const cancel = () => {
-    navigate(`/`);
+  const handleSignUp = () => {
+    navigate("/signup");
   };
 
   const save = () => {
@@ -25,7 +25,7 @@ function SignIn() {
         const role = response.data.role;
         localStorage.setItem("jwtToken", token);
         localStorage.setItem("role", role);
-        navigate(`/`);
+        navigate(`/patients`);
       })
       .catch((error) => {
         console.error("Error creating user:", error);
@@ -65,10 +65,10 @@ function SignIn() {
             </label>
           </div>
           <div>
-            <button type="button" onClick={cancel}>
-              Cancel
-            </button>
             <button type="submit">Login</button>
+            <button type="button" onClick={handleSignUp}>
+              Sign Up
+            </button>
           </div>
         </form>
       </div>

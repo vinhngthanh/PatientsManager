@@ -37,7 +37,7 @@ function EditPatient() {
   }, [patientId]);
 
   const cancel = () => {
-    navigate(`/`);
+    navigate(`/patients`);
   };
 
   const save = () => {
@@ -57,7 +57,7 @@ function EditPatient() {
     axiosInstance
       .put(`http://localhost:8080/patients/${patientId}`, updatedUser)
       .then(() => {
-        navigate(`/`);
+        navigate(`/patients`);
       })
       .catch((error) => {
         console.error("Error creating user:", error);

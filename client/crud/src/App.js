@@ -10,11 +10,11 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route exact path="/" element={<AllPatients />} />
+        <Route exact path="/" element={<SignIn />} />
         <Route exact path="/edit/:patientId" element={<EditPatient />} />
         <Route exact path="/create" element={<CreatePatient />} />
-        <Route exact path="/signin" element={<SignIn />} />
         <Route exact path="/signup" element={<SignUp />} />
+        <Route exact path="/patients" element={<AllPatients />} />
       </Routes>
     </Router>
   );
