@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../instances/AxiosInstance";
+import axios from "axios";
+import "../css/AllPatients.css";
 
 function AllPatients() {
   const [patients, setPatients] = useState([]);
@@ -9,6 +11,8 @@ function AllPatients() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pageSize, setPageSize] = useState(20);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [criteria, setCriteria] = useState({
     patientId: "",
     name: "",
@@ -49,6 +53,17 @@ function AllPatients() {
   useEffect(() => {
     fetchPatients(currentPage, pageSize, filterCriteria);
   }, [currentPage, pageSize, filterCriteria]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("jwtToken");
+    setIsLoggedIn(!!token);
+    const role = localStorage.getItem("role");
+    if (role === "ADMIN") {
+      setIsAdmin(true);
+    } else {
+      setIsAdmin(false);
+    }
+  }, []);
 
   const handleEdit = (patientId) => {
     navigate(`/edit/${patientId}`);
@@ -108,11 +123,13 @@ function AllPatients() {
     navigate("/signin");
   };
   const handleLogout = () => {
-    axiosInstance
+    axios
       .post(`http://localhost:8080/auth/logout`)
       .then(() => {
         localStorage.removeItem("jwtToken");
-        navigate(`/`);
+        setIsAdmin(false);
+        setIsLoggedIn(false);
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Error logging out:", error);
@@ -129,7 +146,11 @@ function AllPatients() {
 
     for (let i = startPage; i <= maxPageToShow; i++) {
       pageButtons.push(
-        <button key={i} onClick={() => handlePageClick(i)}>
+        <button
+          key={i}
+          onClick={() => handlePageClick(i)}
+          disabled={currentPage === i}
+        >
           {i}
         </button>
       );
@@ -142,14 +163,26 @@ function AllPatients() {
   };
 
   return (
-    <div>
+    <div className="page-container">
       <h1>All Patients</h1>
       <div>
-        <button onClick={() => handleLogin()}>Login</button>
-        <button onClick={() => handleLogout()}>Logout</button>
-        <button onClick={() => handleNewUser()}>New User</button>
+        {!isLoggedIn && (
+          <>
+            <button onClick={() => handleLogin()}>Login</button>
+          </>
+        )}
+        {isLoggedIn && (
+          <>
+            <button onClick={() => handleLogout()}>Logout</button>
+          </>
+        )}
+        {!isLoggedIn && (
+          <>
+            <button onClick={() => handleNewUser()}>New User</button>
+          </>
+        )}
       </div>
-      <div>
+      <div className="filter-container">
         <input
           placeholder="ID"
           type="text"
@@ -203,32 +236,46 @@ function AllPatients() {
             <th>Age</th>
             <th>Email</th>
             <th>Phone Number</th>
-            <th>Actions</th>
+            {isAdmin && (
+              <>
+                <th>Actions</th>
+              </>
+            )}
           </tr>
         </thead>
         <tbody>
-          {patients.map((patient) => (
-            <tr key={patient.patientId}>
-              <td>{patient.patientId}</td>
-              <td>{patient.name}</td>
-              <td>{patient.gender}</td>
-              <td>{patient.age}</td>
-              <td>{patient.email}</td>
-              <td>{patient.phoneNumber}</td>
-              <td>
-                <button onClick={() => handleEdit(patient.patientId)}>
-                  Edit
-                </button>
-                <button onClick={() => handleDeleteClick(patient.patientId)}>
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
+          {isLoggedIn &&
+            patients.map((patient) => (
+              <tr key={patient.patientId}>
+                <td>{patient.patientId}</td>
+                <td>{patient.name}</td>
+                <td>{patient.gender}</td>
+                <td>{patient.age}</td>
+                <td>{patient.email}</td>
+                <td>{patient.phoneNumber}</td>
+                {isAdmin && (
+                  <>
+                    <td>
+                      <button onClick={() => handleEdit(patient.patientId)}>
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteClick(patient.patientId)}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </>
+                )}
+              </tr>
+            ))}
         </tbody>
       </table>
-      <button onClick={handleCreate}>Create Patient</button>
-
+      {isLoggedIn && isAdmin && (
+        <>
+          <button onClick={handleCreate}>Create Patient</button>
+        </>
+      )}
       <div className="navigator">
         <button
           onClick={() => setCurrentPage(currentPage - 1)}
@@ -248,6 +295,7 @@ function AllPatients() {
           id="sizeSelect"
           name="sizeSelect"
           onChange={handlePageSizeChange}
+          defaultValue="20"
         >
           <option value="10">10</option>
           <option value="20">20</option>

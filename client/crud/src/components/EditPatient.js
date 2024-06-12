@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../instances/AxiosInstance";
+import "../css/AllPatients.css";
 
 function EditPatient() {
   const { patientId } = useParams();
@@ -13,7 +14,7 @@ function EditPatient() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios
+    axiosInstance
       .get(`http://localhost:8080/patients/${patientId}`)
       .then((response) => {
         const patientData = response.data;
@@ -53,7 +54,7 @@ function EditPatient() {
       phoneNumber,
     };
 
-    axios
+    axiosInstance
       .put(`http://localhost:8080/patients/${patientId}`, updatedUser)
       .then(() => {
         navigate(`/`);
@@ -71,76 +72,78 @@ function EditPatient() {
   };
 
   return (
-    <div>
-      <h1>Edit User</h1>
-      {error && <div>{error}</div>}
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          save();
-        }}
-      >
-        <div>
-          <label>
-            Name:
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Gender:
-            <input
-              type="text"
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Age:
-            <input
-              type="text"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Email:
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Phone Number:
-            <input
-              type="text"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <button type="button" onClick={cancel}>
-            Cancel
-          </button>
-          <button type="submit">Save</button>
-        </div>
-      </form>
+    <div className="form-container">
+      <div className="form">
+        <h1>Edit User</h1>
+        {error && <div>{error}</div>}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            save();
+          }}
+        >
+          <div>
+            <label>
+              Name:
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Gender:
+              <input
+                type="text"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                required
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Age:
+              <input
+                type="text"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                required
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Email:
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Phone Number:
+              <input
+                type="text"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                required
+              />
+            </label>
+          </div>
+          <div>
+            <button type="button" onClick={cancel}>
+              Cancel
+            </button>
+            <button type="submit">Save</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

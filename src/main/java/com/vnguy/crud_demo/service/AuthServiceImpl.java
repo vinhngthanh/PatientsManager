@@ -34,11 +34,11 @@ public class AuthServiceImpl implements AuthService {
         var usernamePassword = new UsernamePasswordAuthenticationToken(signInRequest.getUsername(), signInRequest.getPassword());
         Authentication authentication = authenticationManager.authenticate(usernamePassword);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String userRole = ((User) authentication.getPrincipal()).getRole().getValue();
-        String jwt = jwtUtil.generateToken(signInRequest.getUsername());
+        User user = (User) authentication.getPrincipal();
+        String jwt = jwtUtil.generateToken(user.getUsername());
         JwtResponse response = new JwtResponse();
         response.setAccessToken(jwt);
-        response.setRole(userRole);
+        response.setRole(user.getRole().getValue());
         return response;
     }
 
@@ -56,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
                 passwordEncoder.encode(signUpRequest.getPassword()),
                 role));
     }
-    
+
     @Override
     public void logout() {
         SecurityContextHolder.clearContext();

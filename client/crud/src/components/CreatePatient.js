@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../instances/AxiosInstance";
+import "../css/AllPatients.css";
 
 function CreatePatient() {
   const [name, setName] = useState("");
@@ -47,76 +48,78 @@ function CreatePatient() {
   };
 
   return (
-    <div>
-      <h1>Create User</h1>
-      {error && <div>{error}</div>}
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          save();
-        }}
-      >
-        <div>
-          <label>
-            Name:
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Gender:
-            <input
-              type="text"
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Age:
-            <input
-              type="text"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Email:
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Phone Number:
-            <input
-              type="text"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <button type="button" onClick={cancel}>
-            Cancel
-          </button>
-          <button type="submit">Save</button>
-        </div>
-      </form>
+    <div className="form-container">
+      <div className="form">
+        <h1>Create User</h1>
+        {error && <div>{error}</div>}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            save();
+          }}
+        >
+          <div>
+            <label>
+              Name:
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Gender:
+              <input
+                type="text"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                required
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Age:
+              <input
+                type="text"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                required
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Email:
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Phone Number:
+              <input
+                type="text"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                required
+              />
+            </label>
+          </div>
+          <div>
+            <button type="button" onClick={cancel}>
+              Cancel
+            </button>
+            <button type="submit">Save</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

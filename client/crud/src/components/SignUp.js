@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "../css/AllPatients.css";
 
 function SignUp() {
   const [username, setUsername] = useState("");
@@ -34,49 +35,55 @@ function SignUp() {
   };
 
   return (
-    <div>
-      <h1>New Account</h1>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          save();
-        }}
-      >
-        <div>
-          <label>
-            Username:
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Password:
-            <input
-              type="text"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </label>
-        </div>
-        <div>
-          <select id="roleSelect" name="roleSelect" onChange={handleRoleChange}>
-            <option value="ADMIN">ADMIN</option>
-            <option value="USER">USER</option>
-          </select>
-        </div>
-        <div>
-          <button type="button" onClick={cancel}>
-            Cancel
-          </button>
-          <button type="submit">Sign Up</button>
-        </div>
-      </form>
+    <div className="form-container">
+      <div className="form">
+        <h1>New Account</h1>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            save();
+          }}
+        >
+          <div>
+            <label>
+              Username:
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Password:
+              <input
+                type="text"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </label>
+          </div>
+          <div>
+            <select
+              id="roleSelect"
+              name="roleSelect"
+              onChange={handleRoleChange}
+            >
+              <option value="ADMIN">ADMIN</option>
+              <option value="USER">USER</option>
+            </select>
+          </div>
+          <div>
+            <button type="button" onClick={cancel}>
+              Cancel
+            </button>
+            <button type="submit">Sign Up</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
