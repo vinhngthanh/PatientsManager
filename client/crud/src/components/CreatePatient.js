@@ -51,7 +51,7 @@ function CreatePatient() {
     <div className="form-container">
       <div className="form">
         <h1>Create User</h1>
-        {error && <div>{error}</div>}
+        {error && <div className="error-box">{error}</div>}
         <form
           onSubmit={(e) => {
             e.preventDefault();

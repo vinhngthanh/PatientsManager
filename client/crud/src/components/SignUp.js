@@ -7,6 +7,7 @@ function SignUp() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSignIn = () => {
@@ -30,7 +31,14 @@ function SignUp() {
         navigate(`/`);
       })
       .catch((error) => {
-        console.error("Error creating user:", error);
+        console.error("Error logging in:", error);
+        if (error.response && error.response.data) {
+          setError(
+            error.response.data.message || "Sign up failed. Please try again."
+          );
+        } else {
+          setError("Sign up failed. Username taken.");
+        }
       });
   };
 
@@ -38,6 +46,7 @@ function SignUp() {
     <div className="form-container">
       <div className="form">
         <h1>New Account</h1>
+        {error && <div className="error-box">{error}</div>}
         <form
           onSubmit={(e) => {
             e.preventDefault();

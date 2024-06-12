@@ -75,7 +75,7 @@ function EditPatient() {
     <div className="form-container">
       <div className="form">
         <h1>Edit User</h1>
-        {error && <div>{error}</div>}
+        {error && <div className="error-box">{error}</div>}
         <form
           onSubmit={(e) => {
             e.preventDefault();

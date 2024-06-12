@@ -6,6 +6,7 @@ import "../css/AllPatients.css";
 function SignIn() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSignUp = () => {
@@ -31,6 +32,13 @@ function SignIn() {
       window.location.reload();
     } catch (error) {
       console.error("Error logging in:", error);
+      if (error.response && error.response.data) {
+        setError(
+          error.response.data.message || "Login failed. Please try again."
+        );
+      } else {
+        setError("Login failed. Please check your credentials and try again.");
+      }
     }
   };
 
@@ -38,6 +46,7 @@ function SignIn() {
     <div className="form-container">
       <div className="form">
         <h1>Login</h1>
+        {error && <div className="error-box">{error}</div>}
         <form
           onSubmit={(e) => {
             e.preventDefault();
