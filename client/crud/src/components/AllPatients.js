@@ -6,7 +6,8 @@ import "../css/AllPatients.css";
 
 function AllPatients() {
   const [patients, setPatients] = useState([]);
-  const [showConfirm, setShowConfirm] = useState(false);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [showConfirmLogout, setShowConfirmLogout] = useState(false);
   const [selectedPatientId, setSelectedPatientId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -64,7 +65,11 @@ function AllPatients() {
 
   const handleDeleteClick = (patientId) => {
     setSelectedPatientId(patientId);
-    setShowConfirm(true);
+    setShowConfirmDelete(true);
+  };
+
+  const handleLogoutClick = () => {
+    setShowConfirmLogout(true);
   };
 
   const handleConfirmDelete = () => {
@@ -76,12 +81,12 @@ function AllPatients() {
             (patient) => patient.patientId !== selectedPatientId
           )
         );
-        setShowConfirm(false);
+        setShowConfirmDelete(false);
         setSelectedPatientId(null);
       })
       .catch((error) => {
         console.error("Error deleting patient:", error);
-        setShowConfirm(false);
+        setShowConfirmDelete(false);
         setSelectedPatientId(null);
       });
   };
@@ -100,8 +105,12 @@ function AllPatients() {
   };
 
   const handleCancelDelete = () => {
-    setShowConfirm(false);
+    setShowConfirmDelete(false);
     setSelectedPatientId(null);
+  };
+
+  const handleCancelLogout = () => {
+    setShowConfirmLogout(false);
   };
 
   const handleCreate = () => {
@@ -112,7 +121,7 @@ function AllPatients() {
     setCurrentPage(page);
   };
 
-  const handleLogout = () => {
+  const handleConfirmLogout = () => {
     axios
       .post(`http://localhost:8080/auth/logout`)
       .then(() => {
@@ -154,7 +163,7 @@ function AllPatients() {
     <div className="page-container">
       <h1>All Patients</h1>
       <div>
-        <button onClick={() => handleLogout()}>Logout</button>
+        <button onClick={handleLogoutClick}>Logout</button>
       </div>
       <div className="filter-container">
         <input
@@ -171,13 +180,17 @@ function AllPatients() {
           value={criteria.name}
           onChange={handleInputChange}
         />
-        <input
-          placeholder="Gender"
-          type="text"
+
+        <select
           name="gender"
           value={criteria.gender}
           onChange={handleInputChange}
-        />
+        >
+          <option value="">Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+
         <input
           placeholder="Age"
           type="text"
@@ -276,12 +289,22 @@ function AllPatients() {
         </select>
       </div>
 
-      {showConfirm && (
+      {showConfirmDelete && (
         <div className="confirmation-dialog">
           <div className="dialog-content">
             <p>Are you sure you want to delete this patient?</p>
             <button onClick={handleCancelDelete}>Cancel</button>
             <button onClick={handleConfirmDelete}>Confirm</button>
+          </div>
+        </div>
+      )}
+
+      {showConfirmLogout && (
+        <div className="confirmation-dialog">
+          <div className="dialog-content">
+            <p>Are you sure you want to logout?</p>
+            <button onClick={handleCancelLogout}>Cancel</button>
+            <button onClick={handleConfirmLogout}>Confirm</button>
           </div>
         </div>
       )}
